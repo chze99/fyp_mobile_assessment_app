@@ -1,10 +1,17 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_assessment/Backend/api.dart';
+import 'package:mobile_assessment/Screen/Lecturer/LecturerApplicationSetting.dart';
+import 'package:mobile_assessment/Screen/Lecturer/LecturerProfileChangePassword.dart';
+import 'package:mobile_assessment/Screen/Lecturer/LecturerProfileEdit.dart';
+import 'package:mobile_assessment/Screen/error_alert.dart';
 import 'package:mobile_assessment/Screen/login_user_selection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../loading_page.dart';
 
 class LecturerProfilePage extends StatefulWidget {
   @override
@@ -15,10 +22,18 @@ class _LecturerProfilePageState extends State<LecturerProfilePage> {
   String name = "";
   var profile_data, image_data;
   var isLoading = true;
+  var users;
   @override
   void initState() {
     load_user_data();
     super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   load_user_data() async {
@@ -26,6 +41,7 @@ class _LecturerProfilePageState extends State<LecturerProfilePage> {
     var user = jsonDecode(local_storage.getString('user') ?? "");
     if (user != null && user != "") {
       setState(() {
+        users = user;
         name = user['username'];
       });
       var data = {
@@ -44,7 +60,6 @@ class _LecturerProfilePageState extends State<LecturerProfilePage> {
       var res_image = await Api().postData(imagedata, "getLecturerImage");
       var image_body = json.decode(res_image.body);
       if (body['success']) {
-        ;
         setState(() {
           profile_data = body['lecturer_data'];
           image_data = image_body;
@@ -59,31 +74,180 @@ class _LecturerProfilePageState extends State<LecturerProfilePage> {
     print(isLoading);
     print(image_data);
     if (isLoading) {
-      return Scaffold(
-        body: Container(),
+      return WillPopScope(
+        onWillPop: () {
+          Navigator.pop(context);
+          return Future.value(false);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Profile"),
+            backgroundColor: Colors.orange,
+          ),
+          body: Stack(children: <Widget>[
+            Container(
+              width: double.maxFinite,
+              child: new loading_page(),
+            )
+          ]),
+        ),
       );
     } else {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+          backgroundColor: Colors.orange,
+        ),
         body: Stack(
           children: <Widget>[
             Container(
+              width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Welcome, $name,you are at profile page',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image(
+                            image: NetworkImage("http://192.168.0.15:80" +
+                                image_data['profile_image']),
+                            width: 150,
+                            height: 150),
+                        SizedBox(width: 50),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              profile_data[0]['lecturer_name'],
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              profile_data[0]['lecturer_id'].toString(),
+                              style: TextStyle(fontSize: 20),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                    Image(
-                      image: NetworkImage(
-                          "http://10.0.2.2:8000" + image_data['profile_image']),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Card(
+                          child: InkWell(
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                child: Text(
+                                  "Profile Setting",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                )),
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LecturerProfileEdit(
+                                                    users['user_id'])))
+                                    .then((value) {
+                                  setState(() {
+                                    isLoading = true;
+                                    load_user_data();
+                                  });
+                                });
+                              });
+                            },
+                          ),
+                        ))
+                      ],
                     ),
-                    ElevatedButton(
-                      child: Text("Logout"),
-                      onPressed: () {
-                        logout();
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Card(
+                          child: InkWell(
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                child: Text(
+                                  "Change Password",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                )),
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LecturerProfileChangePassword(
+                                                    users['user_id'])))
+                                    .then((value) {
+                                  setState(() {
+                                    isLoading = true;
+                                    load_user_data();
+                                  });
+                                });
+                              });
+                            },
+                          ),
+                        ))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Card(
+                          child: InkWell(
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                child: Text(
+                                  "Application Setting",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                )),
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LecturerApplicationSetting(
+                                                    users['user_id'])))
+                                    .then((value) {
+                                  setState(() {
+                                    isLoading = true;
+                                    load_user_data();
+                                  });
+                                });
+                              });
+                            },
+                          ),
+                        ))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Card(
+                          child: InkWell(
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: Text(
+                                  "Logout",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                )),
+                            onTap: () {
+                              logout();
+                            },
+                          ),
+                        ))
+                      ],
                     ),
                   ],
                 ),
@@ -103,11 +267,14 @@ class _LecturerProfilePageState extends State<LecturerProfilePage> {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('user');
       localStorage.remove('token');
+      FirebaseMessaging.instance.deleteToken();
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginUserSelection()),
+          MaterialPageRoute(builder: (context) => LoginUserSelection("")),
           (Route<dynamic> route) => false);
     } else {
+      error_alert().alert(context, "Error", body.toString());
+
       print(body);
     }
   }

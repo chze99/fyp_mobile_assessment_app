@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "923859421354",
+    "project_id": "mobileassessmentfyp",
+    "storage_bucket": "mobileassessmentfyp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923859421354:android:5476fbab7a0f9a3bd328d3",
+        "android_client_info": {
+          "package_name": "com.lowoonchze.mobile_assessment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923859421354-a2cljm357sv7g2tbd8q120go7o985ueh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpRvW0hGg_9mNKf3p_OnBRIVV76nb7xqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923859421354-a2cljm357sv7g2tbd8q120go7o985ueh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

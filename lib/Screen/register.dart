@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, must_call_super, deprecated_member_use
 
 import 'dart:convert';
 import 'dart:io';
@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_assessment/Backend/api.dart';
 import 'package:mobile_assessment/Screen/Student/student_home.dart';
 import 'package:mobile_assessment/Screen/login_user_selection.dart';
+import 'package:mobile_assessment/Screen/regex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
@@ -31,6 +32,7 @@ class _RegisterState extends State<Register> {
   var idpic;
   var notVisible;
   var usernameExist;
+  var emailExist;
   bool isProfilePicEmpty = false, isIdPicEmpty = false;
   DateTime lastlogin = DateTime.now();
   //For upload image
@@ -139,8 +141,9 @@ class _RegisterState extends State<Register> {
                                                 validator: (usernameValue) {
                                                   if (usernameValue!.isEmpty) {
                                                     return 'Please enter username';
-                                                  } else if (isUserNameValid(
-                                                          usernameValue) ==
+                                                  } else if (regex()
+                                                          .isUserNameValid(
+                                                              usernameValue) ==
                                                       false) {
                                                     return "only character and numeric is allowed";
                                                   } else if (usernameValue
@@ -192,8 +195,9 @@ class _RegisterState extends State<Register> {
                                                 validator: (nameValue) {
                                                   if (nameValue!.isEmpty) {
                                                     return 'Please enter your name';
-                                                  } else if (isCharacterOnly(
-                                                          nameValue) ==
+                                                  } else if (regex()
+                                                          .isCharacterOnly(
+                                                              nameValue) ==
                                                       false) {
                                                     return "Only accept character";
                                                   }
@@ -350,10 +354,15 @@ class _RegisterState extends State<Register> {
                                                 validator: (emailValue) {
                                                   if (emailValue!.isEmpty) {
                                                     return 'Please enter email';
-                                                  } else if (isEmailValid(
-                                                          emailValue) ==
+                                                  } else if (regex()
+                                                          .isEmailValid(
+                                                              emailValue) ==
                                                       false) {
                                                     return 'Wrong email format';
+                                                  } else if (emailExist ==
+                                                      true) {
+                                                    emailExist = false;
+                                                    return "Email is exist";
                                                   }
                                                   email = emailValue;
                                                   return null;
@@ -396,8 +405,9 @@ class _RegisterState extends State<Register> {
                                                 validator: (icatsIDValue) {
                                                   if (icatsIDValue!.isEmpty) {
                                                     return 'Please enter Student ID';
-                                                  } else if (isNumberOnly(
-                                                          icatsIDValue) ==
+                                                  } else if (regex()
+                                                          .isNumberOnly(
+                                                              icatsIDValue) ==
                                                       false) {
                                                     return "Only accept number";
                                                   }
@@ -441,8 +451,9 @@ class _RegisterState extends State<Register> {
                                                 validator: (iuklIDValue) {
                                                   if (iuklIDValue!.isEmpty) {
                                                     return 'Please enter Student ID';
-                                                  } else if (isNumberOnly(
-                                                          iuklIDValue) ==
+                                                  } else if (regex()
+                                                          .isNumberOnly(
+                                                              iuklIDValue) ==
                                                       false) {
                                                     return "Only accept number";
                                                   }
@@ -695,7 +706,8 @@ class _RegisterState extends State<Register> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        LoginUserSelection()));
+                                                        LoginUserSelection(
+                                                            "")));
                                           },
                                           child: Text(
                                             'Already Have an Account',
@@ -752,17 +764,22 @@ class _RegisterState extends State<Register> {
       var res = await Api().authData(data, 'register_student');
       var body = json.decode(res.body);
       if (body['success']) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('token', json.encode(body['token']));
-        localStorage.setString('user', json.encode(body['user']));
         Navigator.pushAndRemoveUntil(
             context,
-            new MaterialPageRoute(builder: (context) => StudentHome()),
+            new MaterialPageRoute(
+                builder: (context) =>
+                    LoginUserSelection("Please wait for admin approvement")),
             (route) => false);
       } else {
         if (body['message'] == "Username is exist") {
           setState(() {
             usernameExist = true;
+            _formKey.currentState!.validate();
+            print("test");
+          });
+        } else if (body['message'] == "Email is used") {
+          setState(() {
+            emailExist = true;
             _formKey.currentState!.validate();
             print("test");
           });

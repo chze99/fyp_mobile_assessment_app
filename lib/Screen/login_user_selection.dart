@@ -7,6 +7,8 @@ import 'package:mobile_assessment/Screen/login.dart';
 
 class LoginUserSelection extends StatefulWidget {
   @override
+  String message = "";
+  LoginUserSelection(this.message);
   LoginUserSelectionState createState() => LoginUserSelectionState();
 }
 
@@ -14,15 +16,7 @@ class LoginUserSelectionState extends State<LoginUserSelection> {
   bool isLoading = false;
   var usertype;
   final form_key = GlobalKey<FormState>();
-  showMsg(msg) {
-    final snackBar = SnackBar(
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {},
-      ),
-    );
-  }
+  showMsg(msg) {}
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +29,6 @@ class LoginUserSelectionState extends State<LoginUserSelection> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image(
-                  image: AssetImage('assets/images/logo_temp.png'),
-                  width: 200,
-                  height: 200,
-                ),
                 SizedBox(
                   child: Card(
                     elevation: 4.0,
@@ -135,6 +124,10 @@ class LoginUserSelectionState extends State<LoginUserSelection> {
                                 ),
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                            child: Text(widget.message),
                           ),
                         ],
                       ),

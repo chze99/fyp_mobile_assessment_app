@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, override_on_non_overriding_member, deprecated_member_use, must_call_super
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -23,6 +23,7 @@ class LoginState extends State<Login> {
   var password;
   var notVisible;
   var usertype;
+  bool isSubmitting = false;
   final scaffold_key = GlobalKey<ScaffoldState>();
   showMsg(msg) {
     final snackBar = SnackBar(
@@ -160,7 +161,7 @@ class LoginState extends State<Login> {
                             ),
                             ElevatedButton(
                               child: Text(
-                                isLoading ? 'Proccessing...' : 'Login',
+                                isSubmitting ? 'Proccessing...' : 'Login',
                                 textDirection: TextDirection.ltr,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -171,7 +172,12 @@ class LoginState extends State<Login> {
                               ),
                               onPressed: () {
                                 if (form_key.currentState!.validate()) {
-                                  _login();
+                                  if (isSubmitting == false) {
+                                    setState(() {
+                                      _login();
+                                      isSubmitting = true;
+                                    });
+                                  }
                                 }
                               },
                             ),
@@ -234,6 +240,7 @@ class LoginState extends State<Login> {
       localStorage.setString('user', json.encode(body['user']));
       var usertype_logged_temp = body['user'];
       var usertype_logged = usertype_logged_temp['usertype'];
+      print(usertype_logged_temp.toString());
       if (usertype_logged == "Student") {
         Navigator.pushAndRemoveUntil(
             context,
@@ -247,10 +254,11 @@ class LoginState extends State<Login> {
       } else {
         Navigator.pushAndRemoveUntil(
             context,
-            new MaterialPageRoute(builder: (context) => LoginUserSelection()),
+            new MaterialPageRoute(builder: (context) => LoginUserSelection("")),
             (Route<dynamic> route) => false);
       }
     } else {
+      isSubmitting = false;
       showMsg(body['message']);
     }
 
