@@ -136,6 +136,7 @@ class _LecturerAssessmentQuestionBankAddState
     };
     var res = await Api().postData(data, "saveQuestionBank");
     var body = json.decode(res.body);
+    print(res.body);
     if (body['success'] != null) {
       if (this.mounted) {
         success = true;

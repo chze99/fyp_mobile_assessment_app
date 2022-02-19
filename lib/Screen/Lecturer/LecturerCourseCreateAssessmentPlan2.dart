@@ -731,6 +731,7 @@ class _LecturerCourseCreateAssessmentPlan2State
                                                 });
                                               } else {
                                                 setState(() {
+                                                  isSubmitting = false;
                                                   overall_weightage_warning =
                                                       "Overall weightage must equal 100";
                                                 });

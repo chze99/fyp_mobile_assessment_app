@@ -648,13 +648,13 @@ class _LecturerCourseDetailPageState extends State<LecturerCourseDetailPage> {
                                                                       flex: 1,
                                                                       child: InkWell(
                                                                           child: Text(
-                                                                            "Create question",
+                                                                            "Edit/View question",
                                                                             style:
                                                                                 TextStyle(color: Colors.green),
                                                                           ),
                                                                           onTap: () {
                                                                             Navigator.push(context,
-                                                                                MaterialPageRoute(builder: (context) => LecturerAssessmentAdd(assessment_data[index.toString()]['assessment_detail_id'], 'add'))).then((value) {
+                                                                                MaterialPageRoute(builder: (context) => LecturerAssessmentAdd(assessment_data[index.toString()]['assessment_detail_id'], 'edit'))).then((value) {
                                                                               setState(() {
                                                                                 get_assessment();
                                                                               });
@@ -751,7 +751,7 @@ class _LecturerCourseDetailPageState extends State<LecturerCourseDetailPage> {
                                                     flex: 1,
                                                     child: InkWell(
                                                         child: Text(
-                                                          "Create question",
+                                                          "Edit/View question",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.green),
@@ -763,7 +763,7 @@ class _LecturerCourseDetailPageState extends State<LecturerCourseDetailPage> {
                                                                   builder: (context) => LecturerAssessmentAdd(
                                                                       final_exam_data[
                                                                           'assessment_detail_id'],
-                                                                      'add'))).then(
+                                                                      'edit'))).then(
                                                               (value) {
                                                             setState(() {
                                                               get_assessment();

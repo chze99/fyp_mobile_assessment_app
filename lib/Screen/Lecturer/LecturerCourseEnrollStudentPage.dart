@@ -393,7 +393,7 @@ class _LecturerCourseEnrollStudentPageState
                                                         ),
                                                       )),
                                                   Expanded(
-                                                      flex: 2,
+                                                      flex: 3,
                                                       child: Text(
                                                         course_student_data[index
                                                                     .toString()]

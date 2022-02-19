@@ -9,6 +9,7 @@ import 'package:mobile_assessment/Screen/Student/StudentProfileEdit.dart';
 
 import 'package:mobile_assessment/Screen/login_user_selection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 import '../loading_page.dart';
 
@@ -87,7 +88,7 @@ class _LecturerApplicationSettingState
     } else if (assessment_filter_option == assessment_filter.soon) {
       local_storage.setString('default_assessment_filter', "Soon");
     }
-    print(local_storage.getString('default_assessment_filter').toString());
+    Toast.show("Saved", context);
   }
 
   @override

@@ -208,17 +208,24 @@ class _LecturerAssessmentPageState extends State<LecturerAssessmentPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () => Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) =>
-                                            LecturerAssessmentViewDetail(
-                                                question_paper_data[
-                                                        index.toString()]
-                                                    ['question_paper_id'],
-                                                'view',
-                                                question_paper_data[
-                                                        index.toString()]
-                                                    ['assessment_detail_id']))),
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (context) =>
+                                                LecturerAssessmentViewDetail(
+                                                    question_paper_data[
+                                                            index.toString()]
+                                                        ['question_paper_id'],
+                                                    'view',
+                                                    question_paper_data[
+                                                            index.toString()][
+                                                        'assessment_detail_id'])))
+                                    .then((value) {
+                                  setState(() {
+                                    isLoading = true;
+                                    load_user_data();
+                                    time_list = [];
+                                  });
+                                }),
                                 child: Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                   child: Column(
@@ -539,6 +546,7 @@ class _LecturerAssessmentPageState extends State<LecturerAssessmentPage> {
                                   setState(() {
                                     isLoading = true;
                                     load_user_data();
+                                    time_list = [];
                                   });
                                 }),
                                 child: Padding(
@@ -864,6 +872,7 @@ class _LecturerAssessmentPageState extends State<LecturerAssessmentPage> {
                                   setState(() {
                                     isLoading = true;
                                     load_user_data();
+                                    time_list = [];
                                   });
                                 }),
                                 child: Padding(

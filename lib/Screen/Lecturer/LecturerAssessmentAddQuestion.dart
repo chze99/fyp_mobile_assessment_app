@@ -63,6 +63,7 @@ class _LecturerAssessmentAddQuestionState
   get_assessment() async {
     var data = {
       'assessment_detail_id': widget.assessment_detail_id,
+      "question_paper_id": widget.question_paper_id,
     };
     var res = await Api().postData(data, "getSpecificAssessmentDetail");
     var body = json.decode(res.body);
@@ -71,7 +72,9 @@ class _LecturerAssessmentAddQuestionState
         setState(() {
           assessment_data = body['message'][0];
           total_mark = 0;
+          section = body['section'];
           print("Assessment Add:" + assessment_data.toString());
+          print(section);
           get_question_list();
         });
       }
@@ -95,7 +98,6 @@ class _LecturerAssessmentAddQuestionState
             question_data = body['message'];
             questionlistLength = question_data['count'];
             question_paper_data = body['qp_detail'];
-            section = body['section'];
             for (int i = 0; i < questionlistLength; i++) {
               total_mark +=
                   double.parse(question_data[i.toString()]['raw_mark']);
@@ -105,12 +107,12 @@ class _LecturerAssessmentAddQuestionState
             }
             print("Get paper" + question_paper_data.toString());
             print("Get question:" + question_data.toString());
-            print("Getsection:" + section.toString());
 
             get_question_type();
           });
         }
       } else {
+        question_data = body['message'];
         question_paper_data = body['qp_detail'];
         get_question_type();
       }

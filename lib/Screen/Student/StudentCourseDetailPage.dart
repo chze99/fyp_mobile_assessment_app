@@ -99,7 +99,7 @@ class _StudentCourseDetailPageState extends State<StudentCourseDetailPage> {
                 double.parse(final_exam_data['assessment_detail_weightage']);
             if (final_exam_data['question_paper'].toString() !=
                 'No question paper') {
-              if (final_exam_data['solution'] != "No solution") {
+              if (final_exam_data['solution'] != "No sol") {
                 if (final_exam_data['solution']['actual_score'] != null) {
                   total_score_obtained +=
                       double.parse(final_exam_data['solution']['actual_score']);
@@ -569,7 +569,7 @@ class _StudentCourseDetailPageState extends State<StudentCourseDetailPage> {
                                               .toString() !=
                                           "No question paper") ...[
                                         if (final_exam_data['solution'] !=
-                                            "No solution") ...[
+                                            "No sol") ...[
                                           if (final_exam_data['solution']
                                                   ['isSubmitted'] ==
                                               false) ...[

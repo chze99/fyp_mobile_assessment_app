@@ -174,30 +174,6 @@ class _LecturerViewSubmissionMSState extends State<LecturerViewSubmissionMS> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        Row(children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text("Score:",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15)),
-                                          ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Text(
-                                              question_detail_data[
-                                                          'total_score']
-                                                      .toString() +
-                                                  "/" +
-                                                  question_detail_data[
-                                                          'raw_mark']
-                                                      .toString(),
-                                            ),
-                                          )
-                                        ]),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
                                         Card(
                                           elevation: 5,
                                           child: Column(

@@ -328,13 +328,17 @@ class _StudentViewSubmissionPageState extends State<StudentViewSubmissionPage> {
                                 child: Column(
                                   children: [
                                     Card(
-                                        color: question_paper_detail_data[
-                                                            index.toString()]
-                                                        ['solution_total_score']
-                                                    .toString() !=
-                                                '0'
-                                            ? Colors.green
-                                            : Colors.red,
+                                        color: solution_paper_data[
+                                                    'isReviewed'] ==
+                                                true
+                                            ? question_paper_detail_data[index
+                                                                .toString()][
+                                                            'solution_total_score']
+                                                        .toString() !=
+                                                    '0'
+                                                ? Colors.green
+                                                : Colors.red
+                                            : Colors.green,
                                         elevation: 4.0,
                                         child: Column(
                                           mainAxisAlignment:

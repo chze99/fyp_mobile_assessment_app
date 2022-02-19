@@ -242,11 +242,11 @@ class _LecturerAssessmentViewDetailState
                                     ),
                                     Text(
                                       question_paper_data[
-                                                  'question_paper_start_date']
+                                                  'question_paper_end_date']
                                               .toString() +
                                           " " +
                                           question_paper_data[
-                                                  'question_paper_start_time']
+                                                  'question_paper_end_time']
                                               .toString(),
                                     )
                                   ],
